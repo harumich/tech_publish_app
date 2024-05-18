@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:tech_publish_app/features/%20performance_survey/photo_gallery/photo_gallery_screen_.listview_builder.dart';
+import 'package:tech_publish_app/features/%20performance_survey/photo_gallery/photo_gallery_screen_column.dart';
+import 'package:tech_publish_app/features/%20performance_survey/photo_gallery/photo_gallery_screen_listview.dart';
 
 class DebugScreen extends StatelessWidget {
   const DebugScreen({super.key});
@@ -14,13 +17,36 @@ class DebugScreen extends StatelessWidget {
         child: ListView(
           children: [
             _SectionTile(
-              title: 'Section 1',
+              title: '画像ギャラリー画面',
               tiles: [
                 ListTile(
-                  title: const Text(
-                      'ListViewとListView.builderとSingleChildScrollViewでラップされたColumnで動作比較とメリットデメリット'),
+                  title: const Text('SingleChildScrollViewとColumnで実装'),
                   onTap: () {
-                    // TODO: 画面遷移
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const ColumnScreen(),
+                      ),
+                    );
+                  },
+                ),
+                ListTile(
+                  title: const Text('ListViewで実装したパターン'),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const ListViewScreen(),
+                      ),
+                    );
+                  },
+                ),
+                ListTile(
+                  title: const Text('ListView.builderで実装したパターン'),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const ListViewBuilderScreen(),
+                      ),
+                    );
                   },
                 ),
               ],
@@ -32,7 +58,7 @@ class DebugScreen extends StatelessWidget {
   }
 }
 
-class _SectionTile extends StatelessWidget {
+class _SectionTile extends HookWidget {
   const _SectionTile({
     required this.title,
     required this.tiles,

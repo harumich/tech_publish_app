@@ -19,7 +19,7 @@ jobs:
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: 'Preview CI has started.'
+                body: 'Preview CI has started.',
               })
 
       - uses: actions/checkout@v4
@@ -29,6 +29,32 @@ jobs:
         run: gh pr checkout ${{ github.event.issue.number }}
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Flutter
+        id: flutter-action
+        uses: subosito/flutter-action@v2
+        with: 
+          flutter-version: '3.19.5'
 
+      - name: Build Web app
+        run: flutter build web
 
-        
+      - name: Deploy to Cloudflare Pages
+        id: deploy
+        uses: cloudflare/wrangler-action@v3
+        with: 
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy build/web --project-name=tech-publish-app
+
+      - name: Comment on PR with Preview URL
+        if: github.event_name == 'issue_comment'
+        uses: actions/github-script@v6
+        with: 
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Preview URL: ${{ steps.deploy.outputs.deployment-url}}',
+            });

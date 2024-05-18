@@ -1,8 +1,9 @@
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
+import 'package:tech_publish_app/features/%20performance_survey/photo_gallery/photo.dart';
 
-const double _photoHeight = 200;
-
+/// ListView.builderで[Photo]の一覧を表示させた画像ギャラリー画面
+/// ListView.builderは、無限スクロールのリストを実装する際に便利です
 class ListViewBuilderScreen extends StatelessWidget {
   const ListViewBuilderScreen({super.key});
 
@@ -16,11 +17,11 @@ class ListViewBuilderScreen extends StatelessWidget {
       body: ListView.builder(
         itemCount: _imageCount,
         // デフォルトで250.0のキャッシュ領域が確保されています(RenderAbstractViewport.defaultCacheExtent)
-        // 画面に表示されている範囲の上下に10画像分のキャッシュを持たせる
+        // NOTE: 上下スクロールしても表示に詰まらないようにするために、画面に表示されている範囲の上下に10画像分のキャッシュを持たせる
         cacheExtent: _photoHeight * 10,
         itemBuilder: (context, index) {
-          return _Photo(
-            index: index,
+          return Photo(
+            height: _photoHeight,
             url: faker.image.image(
               keywords: ['nature', index.toString()],
               random: true,
@@ -32,24 +33,5 @@ class ListViewBuilderScreen extends StatelessWidget {
   }
 }
 
-class _Photo extends StatelessWidget {
-  const _Photo({
-    required this.index,
-    required this.url,
-  });
-
-  final int index;
-  final String url;
-
-  @override
-  Widget build(BuildContext context) {
-    return Image.network(
-      url,
-      width: double.infinity,
-      height: _photoHeight,
-      fit: BoxFit.cover,
-    );
-  }
-}
-
 const _imageCount = 100;
+const double _photoHeight = 200;

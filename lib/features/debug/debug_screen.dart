@@ -4,6 +4,7 @@ import 'package:tech_publish_app/features/%20performance_survey/photo_gallery/ph
 import 'package:tech_publish_app/features/%20performance_survey/photo_gallery/photo_gallery_screen_column.dart';
 import 'package:tech_publish_app/features/%20performance_survey/photo_gallery/photo_gallery_screen_listview.dart';
 
+/// 開発中の各ページへの導線を表示するページ
 class DebugScreen extends StatelessWidget {
   const DebugScreen({super.key});
 

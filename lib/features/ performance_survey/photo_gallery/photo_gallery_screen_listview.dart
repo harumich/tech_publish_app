@@ -12,6 +12,8 @@ class ListViewScreen extends StatelessWidget {
         title: const Text('ListViewで実装'),
       ),
       body: ListView(
+        // デフォルトで250.0のキャッシュ領域が確保されています(RenderAbstractViewport.defaultCacheExtent)
+        // cacheExtent: 250,
         children: [
           for (var i = 0; i < _imageCount; i++)
             _Photo(

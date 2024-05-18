@@ -1,6 +1,8 @@
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 
+const double _photoHeight = 200;
+
 class ListViewBuilderScreen extends StatelessWidget {
   const ListViewBuilderScreen({super.key});
 
@@ -13,8 +15,12 @@ class ListViewBuilderScreen extends StatelessWidget {
       ),
       body: ListView.builder(
         itemCount: _imageCount,
+        // デフォルトで250.0のキャッシュ領域が確保されています(RenderAbstractViewport.defaultCacheExtent)
+        // 画面に表示されている範囲の上下に10画像分のキャッシュを持たせる
+        cacheExtent: _photoHeight * 10,
         itemBuilder: (context, index) {
           return _Photo(
+            index: index,
             url: faker.image.image(
               keywords: ['nature', index.toString()],
               random: true,
@@ -27,8 +33,12 @@ class ListViewBuilderScreen extends StatelessWidget {
 }
 
 class _Photo extends StatelessWidget {
-  const _Photo({required this.url});
+  const _Photo({
+    required this.index,
+    required this.url,
+  });
 
+  final int index;
   final String url;
 
   @override
@@ -36,7 +46,7 @@ class _Photo extends StatelessWidget {
     return Image.network(
       url,
       width: double.infinity,
-      height: 200,
+      height: _photoHeight,
       fit: BoxFit.cover,
     );
   }
